@@ -6,6 +6,14 @@ export interface BaseEntity {
   active: boolean
 }
 
+export interface IError {
+  code: number
+  moreInfo: string
+  developerMessage: string
+  status: number
+  messages: string[]
+}
+
 export interface Pagination<T> {
   empty: boolean
   first: boolean

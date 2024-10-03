@@ -1,6 +1,8 @@
 import axios from "axios"
 import * as SecureStore from 'expo-secure-store';
 import { TOKEN_COOKIE_NAME, USER_COOKIE_NAME, API_URL } from "../../constants"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from "react-native";
 
 export const apiInstance = axios.create({
   baseURL: API_URL,
@@ -11,7 +13,13 @@ export const apiInstance = axios.create({
 
 apiInstance.interceptors.request.use(
   async function(config) {
-    const token = await SecureStore.getItemAsync(TOKEN_COOKIE_NAME)
+    let token;
+    if (Platform.OS === 'web') {
+      token = await AsyncStorage.getItem(TOKEN_COOKIE_NAME)
+    } else {
+      token = await SecureStore.getItemAsync(TOKEN_COOKIE_NAME)
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -26,9 +34,15 @@ apiInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response.status === 401) {
-      await SecureStore.deleteItemAsync(TOKEN_COOKIE_NAME)
-      await SecureStore.deleteItemAsync(USER_COOKIE_NAME)
 
+      if (Platform.OS === 'web') {
+        await AsyncStorage.removeItem(TOKEN_COOKIE_NAME)
+        await AsyncStorage.removeItem(USER_COOKIE_NAME)
+
+      } else {
+        await SecureStore.deleteItemAsync(TOKEN_COOKIE_NAME)
+        await SecureStore.deleteItemAsync(USER_COOKIE_NAME)
+      }
       window.location.href = `/login`
       return
     }
