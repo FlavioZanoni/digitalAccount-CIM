@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -21,6 +22,7 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+  const queryClient = new QueryClient()
 
   if (!loaded) {
     return null;
@@ -28,10 +30,12 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <QueryClientProvider client={queryClient}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }
