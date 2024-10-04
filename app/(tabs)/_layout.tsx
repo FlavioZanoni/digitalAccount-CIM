@@ -16,8 +16,18 @@ export default function TabLayout() {
       }}>
       <Tabs.Screen
         name="index"
+        style={{ backgroundColor: 'red' }}
         options={{
           title: 'Home',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="calendar"
+        options={{
+          title: 'Calendar',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
@@ -28,7 +38,7 @@ export default function TabLayout() {
         options={{
           title: 'Menu',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
         }}
       />
