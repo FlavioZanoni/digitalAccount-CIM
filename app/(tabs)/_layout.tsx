@@ -1,7 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import Icon from "react-native-vector-icons/MaterialIcons"
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -13,13 +12,28 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: true,
+        tabBarStyle: {
+          height: 80,
+        },
+        tabBarIconStyle: {
+          height: 24,
+        },
+        tabBarItemStyle: {
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 0,
+        },
+        tabBarLabelStyle: {
+          marginLeft: 0
+        }
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <Icon size={24} name={'home'} color={color} />
           ),
         }}
       />
@@ -28,7 +42,7 @@ export default function TabLayout() {
         options={{
           title: 'Calendar',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <Icon size={24} name={'event'} color={color} />
           ),
         }}
       />
@@ -37,10 +51,10 @@ export default function TabLayout() {
         options={{
           title: 'Menu',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <Icon size={24} name={'menu'} color={color} />
           ),
         }}
       />
-    </Tabs>
+    </Tabs >
   );
 }
