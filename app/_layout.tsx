@@ -10,25 +10,20 @@ import { UserProvider } from '@/hooks/useUserContext';
 import { StorageService } from '@/lib/StorageService';
 import { TOKEN_COOKIE_NAME } from '@/constants';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const queryClient = new QueryClient()
-
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
-  useEffect(() => {
-    checkExistingToken()
-  }, []);
 
   const checkExistingToken = async () => {
     const token = await StorageService.getItem(TOKEN_COOKIE_NAME)
-    if (token) {
-      router.push("/(tabs)/")
+    if (!token && loaded) {
+      router.push("/login")
     }
   }
 
@@ -36,6 +31,7 @@ export default function RootLayout() {
     if (loaded) {
       SplashScreen.hideAsync()
     }
+    checkExistingToken()
   }, [loaded])
 
 

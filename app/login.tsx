@@ -19,7 +19,6 @@ import { UserForm } from '@/components/userForm';
 import { router } from 'expo-router';
 
 const { height } = Dimensions.get('window');
-
 const LoginScreen = () => {
   const [errorToast, setErrorToast] = useState<AxiosError<IError>>();
   const [isNewUserModalVisible, setIsNewUserModalVisible] = useState(false);
@@ -35,7 +34,7 @@ const LoginScreen = () => {
   const checkExistingToken = async () => {
     const token = await StorageService.getItem(TOKEN_COOKIE_NAME);
     if (token) {
-      router.push("/(tabs)/")
+      router.replace("/(tabs)/")
     }
   };
 
