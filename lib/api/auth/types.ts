@@ -1,4 +1,4 @@
-import type { Role } from "../types"
+import type { Role, User } from "../types"
 
 export interface IToken {
   iat: number
@@ -15,7 +15,7 @@ export interface IUser {
   email: string
 }
 export interface IUserLogin {
-  login: string
+  username: string
   password: string
 }
 
@@ -29,8 +29,6 @@ export interface GenericResponse {
   message: string
 }
 
-export interface ILoginResponse {
-  status: string
+export interface ILoginResponse extends User {
   token: string
-  expiration: number
 }

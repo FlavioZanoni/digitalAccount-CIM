@@ -52,9 +52,9 @@ export interface GetApiParams {
 
 export type User = {
   id: number
-  name: string
-  email: string
-  roles: Role[]
+  nome: string
+  urlFoto: string
+  usuarioTipo: Role[]
 };
 
 export type Role = (typeof ROLES)[number]

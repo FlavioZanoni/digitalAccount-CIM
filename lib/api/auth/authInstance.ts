@@ -41,7 +41,7 @@ export const signUpUser = async (user: IRegisterUser) => {
 }
 
 export const loginUser = async (user: IUserLogin) => {
-  const response = await authInstance.post<ILoginResponse>("auth/login", user)
+  const response = await authInstance.post<ILoginResponse>("/login/auth", user)
   return response.data as ILoginResponse
 }
 
