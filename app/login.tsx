@@ -14,8 +14,8 @@ import { IError } from '../lib/api';
 import { AxiosError } from 'axios';
 import { StorageService } from '@/lib/StorageService';
 import { TOKEN_COOKIE_NAME } from '@/constants';
-import LoginForm from '@/components/LoginForm';
-import { UserForm } from '@/components/userForm';
+import { LoginForm } from '@/components/Forms/LoginForm';
+import { UserForm } from '@/components/Forms/UserForm';
 import { router } from 'expo-router';
 
 const { height } = Dimensions.get('window');

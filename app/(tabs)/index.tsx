@@ -1,29 +1,21 @@
-import { StyleSheet } from 'react-native';
-import { ThemedView } from '@/components/ThemedView';
+import { ListPage } from "@/components/Pages/ListPage";
+import { Store, getStore } from "@/lib/api/store";
+import { useState } from "react";
+
 
 export default function HomeScreen() {
+  const [currentId, setCurrentId] = useState<number | undefined>(undefined);
   return (
-    <ThemedView style={styles.stepContainer}>
-
-    </ThemedView>
-  );
+    <ListPage<Store>
+      instances={["Store"]}
+      apiFunction={getStore}
+      title={"Lojas"}
+      subtitle={"Lojas com cadastro de obreiro"}
+      label={"Lojas"}
+      path={`/store`}
+      currentId={currentId}
+      setCurrentId={setCurrentId}
+    />
+  )
 }
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
