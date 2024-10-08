@@ -31,8 +31,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
+          title: 'Início',
+          tabBarIcon: ({ color }) => (
             <Icon size={24} name={'home'} color={color} />
           ),
         }}
@@ -40,8 +40,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="calendar"
         options={{
-          title: 'Calendar',
-          tabBarIcon: ({ color, focused }) => (
+          title: 'Calendário',
+          tabBarIcon: ({ color }) => (
             <Icon size={24} name={'event'} color={color} />
           ),
         }}
@@ -50,7 +50,8 @@ export default function TabLayout() {
         name="menu/index"
         options={{
           title: 'Menu',
-          tabBarIcon: ({ color, focused }) => (
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
             <Icon size={24} name={'menu'} color={color} />
           ),
         }}

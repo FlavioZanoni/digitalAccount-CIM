@@ -54,7 +54,7 @@ export type User = {
   id: number
   nome: string
   urlFoto: string
-  usuarioTipo: Role[]
+  usuarioTipo: Role
 };
 
 export type Role = (typeof ROLES)[number]
