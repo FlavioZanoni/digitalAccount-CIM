@@ -63,6 +63,7 @@ const LoginScreen = () => {
 
           <View style={styles.logoContainer}>
             <Image
+              source={require('@/assets/images/mason.png')}
               style={styles.logo}
               resizeMode="contain"
             />
@@ -81,7 +82,7 @@ const LoginScreen = () => {
           />
 
           <View style={styles.newAccountContainer}>
-            <Text style={styles.newAccountText}>eao possui uma conta?</Text>
+            <Text style={styles.newAccountText}>Não possui uma conta?</Text>
             <TouchableOpacity
               onPress={() => setIsNewUserModalVisible(true)}
               disabled

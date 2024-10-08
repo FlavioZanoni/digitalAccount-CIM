@@ -22,7 +22,7 @@ import { USER_COOKIE_NAME } from '@/constants';
 import { router } from 'expo-router';
 
 type FormValues = {
-  login: string;
+  username: string;
   password: string;
 };
 
@@ -46,7 +46,7 @@ export const LoginForm = () => {
       await StorageService.setItem(TOKEN_COOKIE_NAME, token);
       await StorageService.setItem(USER_COOKIE_NAME, JSON.stringify(user))
 
-      router.push('(tabs)');
+      router.push('/(tabs)');
     },
     onError: (error: AxiosError<IError>) => {
       console.log('error', error);
@@ -71,7 +71,7 @@ export const LoginForm = () => {
               <TextInput
                 style={[
                   styles.input,
-                  errors.login && styles.inputError,
+                  errors.username && styles.inputError,
                 ]}
                 placeholder="Email"
                 onChangeText={onChange}
@@ -82,8 +82,8 @@ export const LoginForm = () => {
                 autoComplete="email"
                 textContentType="username"
               />
-              {errors.login && (
-                <Text style={styles.errorText}>{errors.login.message}</Text>
+              {errors.username && (
+                <Text style={styles.errorText}>{errors.username.message}</Text>
               )}
             </View>
           )}
@@ -98,7 +98,7 @@ export const LoginForm = () => {
                   styles.input,
                   errors.password && styles.inputError,
                 ]}
-                placeholder="Password"
+                placeholder="Senha"
                 onChangeText={onChange}
                 onBlur={onBlur}
                 value={value}
