@@ -11,7 +11,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: true,
+        headerShown: false,
         tabBarStyle: {
           height: 80,
         },
@@ -54,6 +54,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <Icon size={24} name={'menu'} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="store/[slug]"
+        options={{
+          href: null,
+          headerShown: false,
         }}
       />
     </Tabs >
