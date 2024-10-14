@@ -17,9 +17,9 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
     onClick(data.id)
   };
 
-  const getCert = async (apiInstance, certURL) => {
+  const getCert = async () => {
     try {
-      const response = await apiInstance.get("/api" + certURL, {
+      const response = await apiInstance.get("/api" + data.certURL, {
         responseType: 'arraybuffer'
       });
 
