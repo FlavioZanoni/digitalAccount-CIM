@@ -59,7 +59,7 @@ function ListPage<T extends BaseEntity>({
     <ScrollView style={styles.container}>
       <View style={styles.content}>
         <SecondaryHeader title={title} subtitle={subtitle} />
-
+        <br />
         {instances.map((instance, index) => (
           <View key={index} style={styles.instanceContainer}>
             {dividerLabel?.[index] && (
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     padding: 24,
     flexDirection: 'column',
     gap: 24,
+    marginBottom: 24,
   },
   searchContainer: {
     width: '100%',

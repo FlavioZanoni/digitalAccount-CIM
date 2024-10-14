@@ -64,7 +64,7 @@ function PaginatedList<T extends BaseEntity>({
     hasNextPage,
   } = useInfiniteQuery({
     queryKey: [`get${instance}`, param, query],
-    queryFn: async ({ pageParam = { offset: 0, limit: 10 } }) => {
+    queryFn: async ({ pageParam = { page: 0, size: 10 } }) => {
       const params = [];
       if (param) {
         params.push({
@@ -80,21 +80,21 @@ function PaginatedList<T extends BaseEntity>({
       }
 
       return apiFunction({
-        offset: pageParam.offset,
-        limit: pageParam.limit,
+        page: pageParam.page,
+        size: pageParam.size,
         filter: filterBuilder(params),
       });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.last) {
+      if (lastPage.number + 1 >= lastPage.totalPages) {
         return undefined;
       }
       return {
-        offset: lastPage.number + 1,
-        limit: lastPage.size,
+        page: lastPage.number + 1,
+        size: lastPage.size,
       };
     },
-    initialPageParam: { offset: 0, limit: 10 },
+    initialPageParam: { page: 0, size: 10 },
   });
 
   if (isLoading) {
@@ -129,7 +129,7 @@ function PaginatedList<T extends BaseEntity>({
                 }}
               >
                 <ListItem
-                  label={item?.name}
+                  label={item?.value}
                   isArrow={!!path}
                 />
               </TouchableOpacity>
@@ -148,7 +148,7 @@ function PaginatedList<T extends BaseEntity>({
             <ActivityIndicator color="#000" />
           ) : (
             <Text style={styles.loadMoreText}>
-              Carregar mais {title.toLowerCase()}
+              Carregar mais {label.toLowerCase()}
             </Text>
           )}
         </TouchableOpacity>

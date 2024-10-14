@@ -9,7 +9,7 @@ export const getStore = async ({
 }: GetApiParams) => {
   return makeApiRequest<Pagination<Store>>({
     method: "get",
-    url: `lojas?offset=${offset}&limit=${limit}${filter || ""}`,
+    url: `lojas?page=${offset}&size=${limit}${filter || ""}`,
   })
 }
 

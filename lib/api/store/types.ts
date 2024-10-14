@@ -1,13 +1,13 @@
 import { BaseEntity } from "../types"
 
 export interface Store extends BaseEntity {
-  id: 0,
+  id: number,
   nome: string,
-  numero: 0,
+  numero: number,
   endereco: string,
   pix: string,
   logo: string,
-  periodicidade: 0,
+  periodicidade: number,
   diaSemana: number,
   status: string,
 }
