@@ -1,3 +1,4 @@
+import CalendarAccordion from "@/components/CalendarAccordion/CalendarAccordion";
 import { ListPage } from "@/components/Pages/ListPage";
 import { Appointment, getAppointment } from "@/lib/api/appointment";
 import { useState } from "react";
@@ -14,6 +15,7 @@ export default function PresenceHistoryScreen() {
       label={"Sessões"}
       currentId={currentId}
       setCurrentId={setCurrentId}
+      accordion={CalendarAccordion}
     />
   )
 }

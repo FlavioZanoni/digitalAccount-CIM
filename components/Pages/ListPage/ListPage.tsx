@@ -35,6 +35,7 @@ type PageListProps<T> = {
   children?: React.ReactNode;
   dividerLabel?: string[];
   path?: string;
+  accordion?: (data: any) => JSX.Element;
 };
 
 function ListPage<T extends BaseEntity>({
@@ -51,7 +52,8 @@ function ListPage<T extends BaseEntity>({
   dividerLabel,
   path,
   currentId,
-  setCurrentId
+  setCurrentId,
+  accordion,
 }: PageListProps<T>) {
   const [query, setQuery] = useState('');
 
@@ -80,6 +82,7 @@ function ListPage<T extends BaseEntity>({
               instance={instance}
               query={query}
               path={path}
+              accordion={accordion}
             >
               {children}
             </PaginatedList>

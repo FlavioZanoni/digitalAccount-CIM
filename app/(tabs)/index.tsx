@@ -9,7 +9,7 @@ export default function HomeScreen() {
   const width = Dimensions.get('window').width;
   const { userCtx } = useUserContext()
 
-  const renderCarouselItem = ({ item, index }) => (
+  const renderCarouselItem = ({ _, index }) => (
     <View
       style={styles.carouselItem}
     >
@@ -31,7 +31,7 @@ export default function HomeScreen() {
       />
       <View style={styles.qrCodeContainer}>
         <QRCode
-          value={userCtx?.id?.toString() || "limaoBananaMaça"}
+          value={userCtx?.hash || "limaoBananaMaça"}
           size={width * 0.6}
           color="#3b5998"
         />

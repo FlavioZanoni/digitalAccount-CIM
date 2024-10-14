@@ -34,6 +34,7 @@ export type User = {
   nome: string
   urlFoto: string
   usuarioTipo: Role
+  hash: string
 };
 
 export type Role = (typeof ROLES)[number]

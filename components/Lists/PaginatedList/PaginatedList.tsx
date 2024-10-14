@@ -29,6 +29,7 @@ type PageListProps<T> = {
   };
   children?: React.ReactNode;
   path?: string;
+  accordion?: (data: any) => JSX.Element;
 };
 
 const ListItem = ({ label, isArrow }: { label: string; isArrow?: boolean }) => (
@@ -53,8 +54,10 @@ function PaginatedList<T extends BaseEntity>({
   param,
   children,
   path,
+  accordion,
 }: PageListProps<T>) {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [oppenedAcordions, setOppenedAcordions] = useState<number[]>([]);
 
   const {
     data,
@@ -97,6 +100,14 @@ function PaginatedList<T extends BaseEntity>({
     initialPageParam: { page: 0, size: 10 },
   });
 
+  const onClickAcc = (id: number) => {
+    if (oppenedAcordions.includes(id)) {
+      setOppenedAcordions(oppenedAcordions.filter((item) => item !== id));
+      return;
+    }
+    setOppenedAcordions([...oppenedAcordions, id]);
+  }
+
   if (isLoading) {
     return <LoadingSkeleton />;
   }
@@ -114,6 +125,13 @@ function PaginatedList<T extends BaseEntity>({
                 key: pageIndex,
               });
             }
+
+            if (accordion) {
+              return page?.content?.map((item, index) => (
+                accordion({ data: item, isOpen: oppenedAcordions.includes(item.id), onClick: onClickAcc, key: index })
+              ));
+            }
+
             return page?.content?.map((item, index) => (
               <TouchableOpacity
                 key={index}
@@ -256,6 +274,31 @@ const styles = StyleSheet.create({
   modalContent: {
     flex: 1,
     padding: 16,
+  },
+  containerAcc: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 4,
+    marginBottom: 10,
+    overflow: 'hidden',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: '#f9f9f9',
+  },
+  headerContent: {
+    flex: 1,
+  },
+  listItemTextAcc: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  content: {
+    padding: 15,
+    backgroundColor: '#fff',
   },
 });
 
