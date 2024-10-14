@@ -68,7 +68,7 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.content}>
-          <Text style={styles.listItemText}>Presença</Text>
+          <Text style={styles.listItemText}>{data?.sessao?.data?.[3] ?? ""} - {data?.sessao?.loja?.rua || ""} </Text>
           <TouchableOpacity onPress={() => getCert()} style={styles.btn}>
             <Icon style={{ color: "#fff" }} name="add" size={24} />
           </TouchableOpacity>

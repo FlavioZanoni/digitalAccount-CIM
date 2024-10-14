@@ -15,10 +15,12 @@ export interface IError {
 }
 
 export interface Pagination<T> {
-  number: number
-  totalElements: number
-  size: number
-  totalPages: number
+  page: {
+    number: number
+    totalElements: number
+    size: number
+    totalPages: number
+  }
   content: T[]
 }
 

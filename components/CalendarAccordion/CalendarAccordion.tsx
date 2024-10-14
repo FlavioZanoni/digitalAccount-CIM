@@ -1,66 +1,124 @@
+import { formatDateArray } from "@/lib/formatDateArray";
 import React from "react";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"
+import { Linking, Platform } from 'react-native';
 
-const ListAccordion = ({ data, isOpen, onClick }: {
+const ListAccordion = ({ data, isOpen, onClick, key }: {
   data: any
   isOpen: boolean
   onClick: (id: string) => void
+  key: number
 }) => {
 
   const toggleAccordion = () => {
     onClick(data.id)
   };
 
+  const openWhatsApp = () => {
+    const phoneNumber = data?.loja?.secretarioTel;
+    const message = `oie`;
+
+    const cleanPhoneNumber = phoneNumber.replace(/\D/g, '');
+    const encodedMessage = encodeURIComponent(message);
+    let whatsappUrl = '';
+
+    if (Platform.OS === 'web') {
+      whatsappUrl = `https://web.whatsapp.com/send?phone=${cleanPhoneNumber}&text=${encodedMessage}`;
+    } else {
+      whatsappUrl = `whatsapp://send?phone=${cleanPhoneNumber}&text=${encodedMessage}`;
+    }
+    const openURL = (url: string) => {
+      if (Platform.OS === 'web') {
+        window.open(url, '_blank');
+      } else {
+        Linking.openURL(url);
+      }
+    };
+
+    if (Platform.OS !== 'web') {
+      Linking.canOpenURL(whatsappUrl)
+        .then(supported => {
+          if (supported) {
+            openURL(whatsappUrl);
+          } else {
+            throw new Error('WhatsApp is not installed');
+          }
+        })
+        .catch(err => {
+          console.error('Error opening WhatsApp:', err);
+          // Fallback option: open WhatsApp in browser
+          const webWhatsapp = `https://api.whatsapp.com/send?phone=${cleanPhoneNumber}&text=${encodedMessage}`;
+          openURL(webWhatsapp);
+        });
+    } else {
+      openURL(whatsappUrl);
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <View key={key} style={styles.container}>
       <TouchableOpacity onPress={toggleAccordion} style={styles.header}>
-        <View style={styles.headerContent}>
-          <Text style={styles.listItemText}>{data?.sessao?.loja?.nome}</Text>
-          <Text style={styles.listItemText}>{data?.sessao?.data}</Text>
-        </View>
         {isOpen ? (
-          <Icon name="chevron-up" size={24} color="#000" />
+          <Icon name="keyboard-arrow-up" size={24} />
         ) : (
-          <Icon name="chevron-down" size={24} color="#000" />
+          <Icon name="keyboard-arrow-down" size={24} />
         )}
+
+        <View style={styles.headerContent}>
+          <Text style={styles.listItemText}>{formatDateArray(data?.data)}</Text>
+          <Text style={styles.listItemText}>{data?.loja?.nome}</Text>
+        </View>
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.content}>
-
-          {/* Add your expanded content here */}
-          <Text>Additional information goes here...</Text>
+          <Text style={styles.listItemText}>{data?.data?.[3] ?? ""} - {data?.sessao?.loja?.rua || ""} </Text>
+          {data?.loja?.secretarioTel && (
+            <TouchableOpacity onPress={() => openWhatsApp()} style={styles.btn}>
+              <Icon style={{ color: "#fff" }} name="add" size={24} />
+            </TouchableOpacity>
+          )}
         </View>
       )}
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 4,
-    marginBottom: 10,
-    overflow: 'hidden',
+    marginBottom: 8,
+    paddingHorizontal: 8,
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    backgroundColor: '#f9f9f9',
+    gap: 6,
   },
   headerContent: {
-    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 8,
+    width: '100%',
   },
   listItemText: {
     fontSize: 16,
-    marginBottom: 5,
+    marginBottom: 6,
+    color: '#475467',
   },
   content: {
-    padding: 15,
-    backgroundColor: '#fff',
+    padding: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  btn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 50,
+    width: 44,
+    height: 44,
+    backgroundColor: '#0a7ea4',
   },
 });
 

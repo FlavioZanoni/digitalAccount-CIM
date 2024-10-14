@@ -89,12 +89,13 @@ function PaginatedList<T extends BaseEntity>({
       });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.number + 1 >= lastPage.totalPages) {
+      console.log(lastPage);
+      if (lastPage.page.number + 1 >= lastPage.page.totalPages) {
         return undefined;
       }
       return {
-        page: lastPage.number + 1,
-        size: lastPage.size,
+        page: lastPage.page.number + 1,
+        size: lastPage.page.size,
       };
     },
     initialPageParam: { page: 0, size: 10 },
