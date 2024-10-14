@@ -47,6 +47,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="attendance"
+        options={{
+          title: 'Presenças',
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <Icon size={24} name={'fact-check'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="menu/index"
         options={{
           title: 'Menu',
@@ -54,13 +64,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <Icon size={24} name={'menu'} color={color} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="store/[slug]"
-        options={{
-          href: null,
-          headerShown: false,
         }}
       />
     </Tabs >
