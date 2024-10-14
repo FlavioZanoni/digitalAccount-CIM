@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, View, Text, StyleSheet, Platform } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { formatDateArray } from "@/lib/formatDateArray";
 import { apiInstance } from "@/lib/api/apiInstance";
@@ -17,28 +17,42 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
     onClick(data.id)
   };
 
-  const getCert = async () => {
+  const getCert = async (apiInstance, certURL) => {
     try {
-      const response = await apiInstance.get("/api" + data.certURL, {
+      const response = await apiInstance.get("/api" + certURL, {
         responseType: 'arraybuffer'
       });
 
       const filename = `CIM-certificado-${Date.now()}.pdf`;
-      const fileUri = FileSystem.documentDirectory + filename;
 
-      await FileSystem.writeAsStringAsync(fileUri, arrayBufferToBase64(response.data), {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(fileUri);
+      if (Platform.OS === 'web') {
+        // Web handling
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode?.removeChild(link);
+        window.URL.revokeObjectURL(url);
       } else {
-        alert('Sharing is not available on your platform');
+        // Mobile handling
+        const fileUri = FileSystem.documentDirectory + filename;
+        await FileSystem.writeAsStringAsync(fileUri, arrayBufferToBase64(response.data), {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        if (await Sharing.isAvailableAsync()) {
+          await Sharing.shareAsync(fileUri);
+        } else {
+          throw new Error('Sharing is not available on your platform');
+        }
       }
 
+      console.log('Certificate downloaded successfully');
     } catch (error) {
       console.error('Error downloading certificate:', error);
-      alert('Failed to download certificate');
+      alert('Failed to download certificate: ' + error.message);
     }
   };
 
