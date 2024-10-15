@@ -29,9 +29,9 @@ export default function MenuScreen() {
       </View>
       <View style={styles.menuContainer}>
         {menus.map((menu, index) => {
-          if (!menu.allowedRoles.includes(userCtx?.usuarioTipo || "USER")) {
+          /* if (!menu.allowedRoles.includes(userCtx?.usuarioTipo || "USER")) {
             return null;
-          }
+          } */
           return (
             <TouchableOpacity
               key={index}

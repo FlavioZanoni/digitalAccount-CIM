@@ -2,9 +2,9 @@ export const getMenus = () => {
   return [
     {
       name: "Home",
-      icon: "home",
+      icon: "Início",
       path: "/(tabs)",
-      allowedRoles: ["USUARIO", "ADMINISTRADOR"],
+      /* allowedRoles: ["USUARIO", "ADMINISTRADOR"], */
     },
   ]
 }
