@@ -20,6 +20,7 @@ import { TOKEN_COOKIE_NAME } from '@/constants';
 import { StorageService } from '@/lib/StorageService';
 import { USER_COOKIE_NAME } from '@/constants';
 import { router } from 'expo-router';
+import { useUserContext } from '@/hooks/useUserContext';
 
 type FormValues = {
   username: string;
@@ -39,12 +40,15 @@ export const LoginForm = () => {
     },
   });
 
+  const { setUserCtx } = useUserContext()
+
   const { mutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: async (data) => {
       const { token, ...user } = data;
       await StorageService.setItem(TOKEN_COOKIE_NAME, token);
       await StorageService.setItem(USER_COOKIE_NAME, JSON.stringify(user))
+      setUserCtx(user)
 
       router.push('/(tabs)');
     },

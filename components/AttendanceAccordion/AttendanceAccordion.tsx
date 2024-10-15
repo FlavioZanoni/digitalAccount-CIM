@@ -48,8 +48,6 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
           throw new Error('Sharing is not available on your platform');
         }
       }
-
-      console.log('Certificate downloaded successfully');
     } catch (error) {
       console.error('Error downloading certificate:', error);
       alert('Failed to download certificate: ' + error.message);

@@ -7,8 +7,6 @@ export class StorageService {
   static isWeb = Platform.OS === 'web';
 
   static async setItem(key: string, value: string) {
-    console.log("key", key)
-    console.log("value", value)
     try {
       if (this.isWeb) {
         // Use AsyncStorage for web

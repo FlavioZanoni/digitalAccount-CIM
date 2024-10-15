@@ -21,7 +21,6 @@ export const UserProvider = ({ children }: Props) => {
   }
 
   useEffect(() => {
-
     getUserInCookie().then((userInCookie) => {
       if (userInCookie) {
         setUserCtx({

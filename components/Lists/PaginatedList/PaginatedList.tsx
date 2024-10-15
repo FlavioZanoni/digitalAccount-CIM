@@ -89,7 +89,6 @@ function PaginatedList<T extends BaseEntity>({
       });
     },
     getNextPageParam: (lastPage) => {
-      console.log(lastPage);
       if (lastPage.page.number + 1 >= lastPage.page.totalPages) {
         return undefined;
       }

@@ -119,8 +119,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -24,
     backgroundColor: 'white',
-    paddingBottom: 8,
-    color: '#000000',
+    color: '#1f1f1f',
   },
 });
 
