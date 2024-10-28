@@ -80,16 +80,6 @@ const LoginScreen = () => {
         <View style={styles.formSection}>
           <LoginForm
           />
-
-          <View style={styles.newAccountContainer}>
-            <Text style={styles.newAccountText}>Não possui uma conta?</Text>
-            <TouchableOpacity
-              onPress={() => setIsNewUserModalVisible(true)}
-              disabled
-            >
-              <Text style={styles.newAccountLink}>Clique aqui!</Text>
-            </TouchableOpacity>
-          </View>
         </View>
 
         <NewAccountModal />
