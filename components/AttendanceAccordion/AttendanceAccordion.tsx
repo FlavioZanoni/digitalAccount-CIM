@@ -19,7 +19,7 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
 
   const getCert = async () => {
     try {
-      const response = await apiInstance.get("/api" + data.certURL, {
+      const response = await apiInstance.get(data.certURL, {
         responseType: 'arraybuffer'
       });
 
@@ -50,7 +50,7 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
       }
     } catch (error) {
       console.error('Error downloading certificate:', error);
-      alert('Failed to download certificate: ' + error.message);
+      alert('Failed to download certificate: ' + error?.message);
     }
   };
 
@@ -80,7 +80,7 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.content}>
-          <Text style={styles.listItemText}>{data?.sessao?.data?.[3] ?? ""} - {data?.sessao?.loja?.rua || ""} </Text>
+          <Text style={styles.listItemText}>{data?.sessao?.data?.[3] ?? ""}h - {data?.sessao?.loja?.nome || ""} </Text>
           <TouchableOpacity onPress={() => getCert()} style={styles.btn}>
             <Icon style={{ color: "#fff" }} name="add" size={24} />
           </TouchableOpacity>

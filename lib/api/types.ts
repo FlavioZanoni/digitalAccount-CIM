@@ -15,6 +15,7 @@ export interface IError {
 }
 
 export interface Pagination<T> {
+
   page: {
     number: number
     totalElements: number

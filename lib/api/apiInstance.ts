@@ -34,11 +34,9 @@ apiInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response.status === 401) {
-
       if (Platform.OS === 'web') {
         await AsyncStorage.removeItem(TOKEN_COOKIE_NAME)
         await AsyncStorage.removeItem(USER_COOKIE_NAME)
-
       } else {
         await SecureStore.deleteItemAsync(TOKEN_COOKIE_NAME)
         await SecureStore.deleteItemAsync(USER_COOKIE_NAME)

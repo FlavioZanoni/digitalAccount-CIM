@@ -72,7 +72,7 @@ const ListAccordion = ({ data, isOpen, onClick, key }: {
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.content}>
-          <Text style={styles.listItemText}>{data?.data?.[3] ?? ""} - {data?.sessao?.loja?.rua || ""} </Text>
+          <Text style={styles.listItemText}>{data?.data?.[3] ?? ""}h - {data?.sessao?.loja?.rua || ""} </Text>
           {data?.loja?.secretarioTel && (
             <TouchableOpacity onPress={() => openWhatsApp()} style={styles.btn}>
               <Icon style={{ color: "#fff" }} name="add" size={24} />

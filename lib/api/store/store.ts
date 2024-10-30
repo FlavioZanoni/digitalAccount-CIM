@@ -3,17 +3,17 @@ import { GetApiParams, Pagination } from "../types"
 import { MutateStore, Store } from "./types"
 
 export const getStore = async ({
-  offset,
-  limit,
+  page,
+  size,
   filter,
 }: GetApiParams) => {
   return makeApiRequest<Pagination<Store>>({
     method: "get",
-    url: `lojas?page=${offset}&size=${limit}${filter || ""}`,
+    url: `lojas?page=${page}&size=${size}${filter || ""}`,
   })
 }
 
-export const getStorePaginationless = async (): Promise<
+export const getStoreList = async (): Promise<
   Store
 > => {
   return await makeApiRequest({
