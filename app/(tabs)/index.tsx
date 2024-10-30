@@ -1,33 +1,17 @@
 import { useUserContext } from "@/hooks/useUserContext";
 import QRCode from "react-qr-code";
-import Carousel from 'react-native-reanimated-carousel';
 import { Dimensions, View, Text } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
+import ImageCarrousel from "@/components/ImageCarrousel/ImageCarrousel";
 
 export default function HomeScreen() {
   const width = Dimensions.get('window').width;
   const { userCtx } = useUserContext()
 
-  const renderCarouselItem = ({ _, index }) => (
-    <View
-      style={styles.carouselItem}
-    >
-      <Text style={styles.carouselText}>{index + 1}</Text>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
-      <Carousel
-        loop
-        width={width}
-        height={width / 2}
-        autoPlay={true}
-        data={[...new Array(6).keys()]}
-        scrollAnimationDuration={1000}
-        renderItem={renderCarouselItem}
-      />
+      <ImageCarrousel />
       <View style={styles.qrCodeContainer}>
         <QRCode
           value={userCtx?.hash || "limaoBananaMaça"}
@@ -35,7 +19,7 @@ export default function HomeScreen() {
           color="#3b5998"
         />
       </View>
-    </View>
+    </View >
   );
 }
 
