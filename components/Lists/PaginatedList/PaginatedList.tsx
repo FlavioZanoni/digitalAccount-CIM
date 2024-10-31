@@ -127,9 +127,14 @@ function PaginatedList<T extends BaseEntity>({
             }
 
             if (accordion) {
-              return page?.content?.map((item, index) => (
-                accordion({ data: item, isOpen: oppenedAcordions.includes(item.id), onClick: onClickAcc, key: index })
-              ));
+              return page?.content?.map((item, index) =>
+                React.createElement(accordion, {
+                  key: item.id || index, // Use stable ID or index
+                  data: item,
+                  isOpen: oppenedAcordions.includes(item.id),
+                  onClick: onClickAcc
+                })
+              );
             }
 
             return page?.content?.map((item, index) => (

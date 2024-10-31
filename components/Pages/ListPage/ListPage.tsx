@@ -61,7 +61,9 @@ function ListPage<T extends BaseEntity>({
     <ScrollView style={styles.container}>
       <View style={styles.content}>
         <SecondaryHeader title={title} subtitle={subtitle} />
-        <br />
+
+        <Text style={{ marginBottom: 12 }} ></Text>
+
         {instances.map((instance, index) => (
           <View key={index} style={styles.instanceContainer}>
             {dividerLabel?.[index] && (

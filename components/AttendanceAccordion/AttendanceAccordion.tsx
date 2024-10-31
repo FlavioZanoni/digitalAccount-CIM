@@ -5,6 +5,15 @@ import { formatDateArray } from "@/lib/formatDateArray";
 import { apiInstance } from "@/lib/api/apiInstance";
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { ActivityIndicator } from 'react-native';
+
+const fetchCertificate = async (certURL: string) => {
+  const response = await apiInstance.get(certURL, {
+    responseType: 'arraybuffer'
+  });
+  return response.data;
+};
 
 const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
   data: any
@@ -12,22 +21,17 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
   key: number
   onClick: (id: string) => void
 }) => {
-
   const toggleAccordion = () => {
     onClick(data.id)
   };
 
-  const getCert = async () => {
-    try {
-      const response = await apiInstance.get(data.certURL, {
-        responseType: 'arraybuffer'
-      });
-
+  const { mutate: getCert, isPending } = useMutation({
+    mutationFn: () => fetchCertificate(data.certURL),
+    onSuccess: async (responseData) => {
       const filename = `CIM-certificado-${Date.now()}.pdf`;
 
       if (Platform.OS === 'web') {
-        // Web handling
-        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const blob = new Blob([responseData], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -37,9 +41,8 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
         link.parentNode?.removeChild(link);
         window.URL.revokeObjectURL(url);
       } else {
-        // Mobile handling
         const fileUri = FileSystem.documentDirectory + filename;
-        await FileSystem.writeAsStringAsync(fileUri, arrayBufferToBase64(response.data), {
+        await FileSystem.writeAsStringAsync(fileUri, arrayBufferToBase64(responseData), {
           encoding: FileSystem.EncodingType.Base64,
         });
         if (await Sharing.isAvailableAsync()) {
@@ -48,11 +51,12 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
           throw new Error('Sharing is not available on your platform');
         }
       }
-    } catch (error) {
+    },
+    onError: (error: Error) => {
       console.error('Error downloading certificate:', error);
-      alert('Failed to download certificate: ' + error?.message);
+      alert('Failed to download certificate: ' + error.message);
     }
-  };
+  });
 
   function arrayBufferToBase64(buffer: ArrayBuffer) {
     let binary = '';
@@ -81,8 +85,20 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
       {isOpen && (
         <View style={styles.content}>
           <Text style={styles.listItemText}>{data?.sessao?.data?.[3] ?? ""}h - {data?.sessao?.loja?.nome || ""} </Text>
-          <TouchableOpacity onPress={() => getCert()} style={styles.btn}>
-            <Icon style={{ color: "#fff" }} name="add" size={24} />
+          <TouchableOpacity
+            onPress={() => getCert()}
+            disabled={isPending}
+            style={[styles.btn, isPending && styles.btnDisabled]}
+          >
+            {isPending ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Icon
+                style={{ color: "#fff" }}
+                name={"add"}
+                size={24}
+              />
+            )}
           </TouchableOpacity>
         </View>
       )}
@@ -110,6 +126,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 6,
     color: '#475467',
+  },
+  btnDisabled: {
+    opacity: 0.7,
   },
   content: {
     padding: 16,
