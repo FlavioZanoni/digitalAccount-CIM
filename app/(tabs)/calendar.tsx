@@ -3,7 +3,6 @@ import { ListPage } from "@/components/Pages/ListPage";
 import { Appointment, getAppointment } from "@/lib/api/appointment";
 import { useState } from "react";
 
-
 export default function PresenceHistoryScreen() {
   const [currentId, setCurrentId] = useState<number | undefined>(undefined);
   return (
