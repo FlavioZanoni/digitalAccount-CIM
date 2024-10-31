@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   TextInput,
@@ -28,6 +28,7 @@ type FormValues = {
 };
 
 export const LoginForm = () => {
+  const [error, setError] = useState<any>();
   const {
     control,
     handleSubmit,
@@ -53,7 +54,7 @@ export const LoginForm = () => {
       router.push('/(tabs)');
     },
     onError: (error: AxiosError<IError>) => {
-      console.log('error', error);
+      setError(error?.response?.data?.title || error?.response?.data || error);
     },
   });
 
@@ -116,6 +117,10 @@ export const LoginForm = () => {
             </View>
           )}
         />
+
+        <Text style={{ color: 'red', textAlign: 'center', marginTop: 20 }}>
+          {error}
+        </Text>
 
         <TouchableOpacity
           style={[

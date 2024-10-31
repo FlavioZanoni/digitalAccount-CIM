@@ -6,30 +6,18 @@ import {
   StyleSheet,
   SafeAreaView,
   Dimensions,
-  TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import Modal from 'react-native-modal';
-import { IError } from '../lib/api';
-import { AxiosError } from 'axios';
 import { StorageService } from '@/lib/StorageService';
 import { TOKEN_COOKIE_NAME } from '@/constants';
 import { LoginForm } from '@/components/Forms/LoginForm';
-import { UserForm } from '@/components/Forms/UserForm';
 import { router } from 'expo-router';
 
 const { height } = Dimensions.get('window');
 const LoginScreen = () => {
-  const [errorToast, setErrorToast] = useState<AxiosError<IError>>();
-  const [isNewUserModalVisible, setIsNewUserModalVisible] = useState(false);
-
   useEffect(() => {
     checkExistingToken();
   }, []);
-
-  useEffect(() => {
-    if (!errorToast) return;
-  }, [errorToast]);
 
   const checkExistingToken = async () => {
     const token = await StorageService.getItem(TOKEN_COOKIE_NAME);
@@ -37,19 +25,6 @@ const LoginScreen = () => {
       router.replace("/(tabs)/")
     }
   };
-
-  const NewAccountModal = () => (
-    <Modal
-      isVisible={isNewUserModalVisible}
-      onBackdropPress={() => setIsNewUserModalVisible(false)}
-      style={styles.modal}
-    >
-      <View style={styles.modalContent}>
-        <Text style={styles.modalTitle}>Create Account</Text>
-        <UserForm onComplete={() => setIsNewUserModalVisible(false)} />
-      </View>
-    </Modal>
-  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -78,11 +53,9 @@ const LoginScreen = () => {
         </View>
 
         <View style={styles.formSection}>
-          <LoginForm
-          />
+          <LoginForm />
         </View>
 
-        <NewAccountModal />
       </ScrollView>
     </SafeAreaView>
   );
