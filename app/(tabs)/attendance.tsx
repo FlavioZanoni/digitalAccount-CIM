@@ -17,7 +17,7 @@ export default function PresenceHistoryScreen() {
       dividerLabel={["Obreiro", "Visitas"]}
       currentId={currentId}
       setCurrentId={setCurrentId}
-      accordion={AttendanceAccordion}
+      Accordion={AttendanceAccordion}
     />
   )
 }

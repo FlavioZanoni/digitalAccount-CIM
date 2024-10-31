@@ -4,11 +4,10 @@ import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { Linking, Platform } from 'react-native';
 
-const ListAccordion = ({ data, isOpen, onClick, key }: {
+const CalendarAccordion = ({ data, isOpen, onClick }: {
   data: any
   isOpen: boolean
   onClick: (id: string) => void
-  key: number
 }) => {
 
   const toggleAccordion = () => {
@@ -57,7 +56,7 @@ const ListAccordion = ({ data, isOpen, onClick, key }: {
   };
 
   return (
-    <View key={key} style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity onPress={toggleAccordion} style={styles.header}>
         {isOpen ? (
           <Icon name="keyboard-arrow-up" size={24} />
@@ -122,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListAccordion;
+export default CalendarAccordion;

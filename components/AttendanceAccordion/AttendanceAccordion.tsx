@@ -15,10 +15,9 @@ const fetchCertificate = async (certURL: string) => {
   return response.data;
 };
 
-const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
+const AttendanceAccordion = ({ data, isOpen, onClick }: {
   data: any
   isOpen: boolean
-  key: number
   onClick: (id: string) => void
 }) => {
   const toggleAccordion = () => {
@@ -69,7 +68,7 @@ const AttendanceAccordion = ({ data, isOpen, onClick, key }: {
   }
 
   return (
-    <View key={key} style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity onPress={toggleAccordion} style={styles.header}>
         {isOpen ? (
           <Icon name="keyboard-arrow-up" size={24} />

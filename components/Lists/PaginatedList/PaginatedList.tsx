@@ -29,7 +29,7 @@ type PageListProps<T> = {
   };
   children?: React.ReactNode;
   path?: string;
-  accordion?: (data: any) => JSX.Element;
+  Accordion?: (data: any) => JSX.Element;
 };
 
 const ListItem = ({ label, isArrow }: { label: string; isArrow?: boolean }) => (
@@ -54,7 +54,7 @@ function PaginatedList<T extends BaseEntity>({
   param,
   children,
   path,
-  accordion,
+  Accordion,
 }: PageListProps<T>) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [oppenedAcordions, setOppenedAcordions] = useState<number[]>([]);
@@ -126,14 +126,13 @@ function PaginatedList<T extends BaseEntity>({
               });
             }
 
-            if (accordion) {
+            if (Accordion) {
+              console.log(Accordion)
               return page?.content?.map((item, index) =>
-                React.createElement(accordion, {
-                  key: item.id || index, // Use stable ID or index
-                  data: item,
-                  isOpen: oppenedAcordions.includes(item.id),
-                  onClick: onClickAcc
-                })
+                <Accordion key={item.id || index} data={item}
+                  isOpen={oppenedAcordions.includes(item.id)}
+                  onClick={onClickAcc}
+                />
               );
             }
 

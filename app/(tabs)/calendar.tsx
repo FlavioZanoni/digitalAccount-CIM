@@ -14,7 +14,7 @@ export default function PresenceHistoryScreen() {
       label={"Sessões"}
       currentId={currentId}
       setCurrentId={setCurrentId}
-      accordion={CalendarAccordion}
+      Accordion={CalendarAccordion}
     />
   )
 }
