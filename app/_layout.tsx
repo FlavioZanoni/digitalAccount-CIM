@@ -15,7 +15,6 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
-  SplashScreen.hideAsync()
 
   const checkExistingToken = async () => {
     const token = await StorageService.getItem(TOKEN_COOKIE_NAME)
@@ -25,9 +24,9 @@ export default function RootLayout() {
   }
 
   useEffect(() => {
+    checkExistingToken()
     if (loaded) {
       SplashScreen.hideAsync()
-      checkExistingToken()
     }
   }, [loaded])
 
