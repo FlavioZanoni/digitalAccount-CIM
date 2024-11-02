@@ -1,4 +1,4 @@
-package com.anonymous.digitalAccount
+package com.dailycode.Sigillum
 
 import android.app.Application
 import android.content.res.Configuration

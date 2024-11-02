@@ -1,6 +1,6 @@
 import { useUserContext } from "@/hooks/useUserContext";
 import QRCode from "react-qr-code";
-import { Dimensions, View, Text, ScrollView } from "react-native";
+import { Dimensions, View, ScrollView } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { ImageCarousel } from "@/components/ImageCarousel";

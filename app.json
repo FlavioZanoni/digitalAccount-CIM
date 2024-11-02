@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "digitalAccount",
-    "slug": "digitalAccount",
+    "name": "Sigillum",
+    "slug": "Sigillum",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,14 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.digitalAccount"
+      "bundleIdentifier": "com.dailycode.Sigillum"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.digitalAccount"
+      "package": "com.dailycode.Sigillum"
     },
     "web": {
       "bundler": "metro",

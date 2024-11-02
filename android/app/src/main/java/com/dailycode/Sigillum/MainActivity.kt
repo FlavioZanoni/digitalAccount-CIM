@@ -1,4 +1,4 @@
-package com.anonymous.digitalAccount
+package com.dailycode.Sigillum
 
 import android.os.Build
 import android.os.Bundle

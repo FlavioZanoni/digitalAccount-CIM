@@ -5,11 +5,19 @@ import * as FileSystem from 'expo-file-system';
 import { useQuery } from '@tanstack/react-query';
 import { getUser } from '@/lib/api/user';
 import { useUserContext } from '@/hooks/useUserContext';
+import { API_URL } from '@/constants';
 
-const url = "https://89.117.32.188/"
+const url = API_URL
+
+type CachedType = {
+  [key: string]: {
+    cached: boolean,
+    uri: string
+  }
+}
 
 const ImageCarousel = () => {
-  const [cachedImages, setCachedImages] = useState({});
+  const [cachedImages, setCachedImages] = useState<CachedType>({});
   const windowWidth = Dimensions.get('window').width;
   const isWeb = Platform.OS === 'web';
   const { userCtx } = useUserContext()
@@ -38,7 +46,7 @@ const ImageCarousel = () => {
       const fileInfo = await FileSystem.getInfoAsync(filepath);
 
       if (fileInfo.exists) {
-        return { uri: fileInfo.uri };
+        return { uri: fileInfo.uri, cached: true };
       }
 
       const downloadResult = await FileSystem.downloadAsync(url + imageUrl, filepath);
@@ -55,7 +63,7 @@ const ImageCarousel = () => {
     const cacheImages = async () => {
       if (!users) return;
 
-      const cachedUris = {};
+      const cachedUris: CachedType = {};
       for (const loja of users) {
         if (loja.logo) {
           cachedUris[loja.logo] = await getCachedImage(loja.logo);
