@@ -27,7 +27,7 @@ const AttendanceAccordion = ({ data, isOpen, onClick }: {
   const { mutate: getCert, isPending } = useMutation({
     mutationFn: () => fetchCertificate(data.certURL),
     onSuccess: async (responseData) => {
-      const filename = `CIM-certificado-${Date.now()}.pdf`;
+      const filename = `SIGILLUM-certificado-${Date.now()}.pdf`;
 
       if (Platform.OS === 'web') {
         const blob = new Blob([responseData], { type: 'application/pdf' });

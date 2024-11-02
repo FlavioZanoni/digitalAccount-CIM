@@ -33,7 +33,7 @@ const LoginScreen = () => {
         <View style={styles.topSection}>
           <View style={styles.headerContainer}>
             <Text style={styles.welcomeText}>
-              Bem-vindo{'\n'} ao CIM
+              Bem-vindo{'\n'} ao Sigillum
             </Text>
           </View>
 
