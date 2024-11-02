@@ -1,0 +1,205 @@
+import React, { useState, useEffect } from 'react';
+import { View, Image, Dimensions, StyleSheet, ActivityIndicator, Text, Platform, ImageResizeMode } from 'react-native';
+import Carousel from 'react-native-reanimated-carousel';
+import * as FileSystem from 'expo-file-system';
+import { useQuery } from '@tanstack/react-query';
+import { getUser } from '@/lib/api/user';
+import { useUserContext } from '@/hooks/useUserContext';
+
+const url = "https://89.117.32.188/"
+
+const ImageCarousel = () => {
+  const [cachedImages, setCachedImages] = useState({});
+  const windowWidth = Dimensions.get('window').width;
+  const isWeb = Platform.OS === 'web';
+  const { userCtx } = useUserContext()
+
+  const { data: users, isLoading, error } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const userData = await getUser(userCtx?.id?.toString() || "1");
+      return userData.lojas;
+    },
+  });
+
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const getCachedImage = async (imageUrl: string) => {
+    try {
+      // For web, just return the URL directly
+      if (isWeb) {
+        return { uri: imageUrl, cached: false };;
+      }
+
+      const filename = imageUrl
+        ?.split('/')
+        ?.pop()
+        ?.replace(/[^a-zA-Z0-9.]/g, '');
+      const filepath = `${FileSystem.cacheDirectory}${filename}`;
+
+      const fileInfo = await FileSystem.getInfoAsync(filepath);
+
+      if (fileInfo.exists) {
+        return { uri: fileInfo.uri };
+      }
+
+      const downloadResult = await FileSystem.downloadAsync(url + imageUrl, filepath);
+      console.log('Image cached:', downloadResult.uri);
+      return { uri: downloadResult.uri, cached: true };
+    } catch (error) {
+      console.error('Error caching image:', error);
+      // Fallback to direct URL
+      return { uri: imageUrl, cached: false };
+    }
+  };
+
+  useEffect(() => {
+    const cacheImages = async () => {
+      if (!users) return;
+
+      const cachedUris = {};
+      for (const loja of users) {
+        if (loja.logo) {
+          cachedUris[loja.logo] = await getCachedImage(loja.logo);
+        }
+      }
+      setCachedImages(cachedUris);
+    };
+
+    cacheImages();
+  }, [users]);
+
+  // Custom image component for web
+  const ImageComponent = ({ source, style, resizeMode }:
+    {
+      source: { uri: string }
+      style: { [key: string]: any }
+      resizeMode: ImageResizeMode
+    }) => {
+    if (isWeb) {
+      return (
+        <img
+          src={source.uri}
+          style={{
+            ...style,
+            objectFit: resizeMode === 'contain' ? 'contain' : 'cover',
+          }}
+          alt="carousel-item"
+        />
+      );
+    }
+    return <Image source={source} style={style} resizeMode={resizeMode} />;
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error || !users) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text>Error loading images</Text>
+      </View>
+    );
+  }
+
+  const renderItem = ({ item }: { item: { logo: string } }) => {
+    let imageSource = item.logo ? cachedImages[item.logo] : null;
+
+    if (imageSource) {
+      if (!imageSource.cached && imageSource.uri.startsWith('http')) {
+        imageSource.uri = url + imageSource.uri
+      }
+    }
+
+    return (
+      <View style={styles.itemContainer}>
+        {imageSource ? (
+          <ImageComponent
+            source={imageSource}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        ) : (
+          <View style={styles.placeholderContainer}>
+            <Text>No image available</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  // Web-specific carousel styles
+  const carouselStyle = isWeb ? {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  } : {};
+
+  return (
+    <View style={[styles.container, carouselStyle]}>
+      <Carousel
+        loop
+        width={windowWidth}
+        height={300}
+        autoPlay={true}
+        data={users.filter((user) => user.logo)}
+        scrollAnimationDuration={1000}
+        renderItem={renderItem}
+        // Web-specific props
+        {...(isWeb && {
+          style: { width: '100%', maxWidth: 800 }, // Limit max width on web
+          defaultIndex: 0,
+        })}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  itemContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    maxWidth: 800, // Limit image size on web
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+    width: '90%',
+    height: '90%',
+  },
+});
+
+export { ImageCarousel };

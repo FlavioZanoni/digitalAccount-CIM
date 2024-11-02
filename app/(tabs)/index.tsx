@@ -3,7 +3,7 @@ import QRCode from "react-qr-code";
 import { Dimensions, View, Text } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
-import ImageCarrousel from "@/components/ImageCarrousel/ImageCarrousel";
+import { ImageCarousel } from "@/components/ImageCarousel";
 
 export default function HomeScreen() {
   const width = Dimensions.get('window').width;
@@ -11,7 +11,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <ImageCarrousel />
+      <ImageCarousel />
       <View style={styles.qrCodeContainer}>
         <QRCode
           value={userCtx?.hash || "limaoBananaMaça"}

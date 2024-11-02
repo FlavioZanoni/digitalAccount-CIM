@@ -16,7 +16,7 @@ export default function TabLayout() {
           tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
           headerShown: false,
           tabBarStyle: {
-            height: 80,
+            height: 70,
           },
           tabBarIconStyle: {
             height: 24,
@@ -25,7 +25,8 @@ export default function TabLayout() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 0,
+            height: 50,
+            marginTop: 10
           },
           tabBarLabelStyle: {
             marginLeft: 0
