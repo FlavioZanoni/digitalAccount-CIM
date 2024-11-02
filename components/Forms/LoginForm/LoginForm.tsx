@@ -54,7 +54,11 @@ export const LoginForm = () => {
       router.push('/(tabs)');
     },
     onError: (error: AxiosError<IError>) => {
-      setError(error?.response?.data?.title || error?.response?.data || error);
+      if (!error?.response?.data?.title) {
+        setError(error?.response?.data?.title || JSON.stringify(error?.response?.data) || JSON.stringify(error));
+        return
+      }
+      setError("Algo deu errado, contate o suporte.")
     },
   });
 

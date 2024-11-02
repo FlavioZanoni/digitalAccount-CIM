@@ -14,6 +14,7 @@ import { LoginForm } from '@/components/Forms/LoginForm';
 import { router } from 'expo-router';
 
 const { height } = Dimensions.get('window');
+
 const LoginScreen = () => {
   useEffect(() => {
     checkExistingToken();

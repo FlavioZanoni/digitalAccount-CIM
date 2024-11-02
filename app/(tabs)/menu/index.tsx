@@ -3,8 +3,17 @@ import { Text, StyleSheet, TouchableOpacity, View } from "react-native"
 import React from "react"
 import { Href, router } from "expo-router";
 import Icon from "react-native-vector-icons/MaterialIcons"
-import { getMenus } from "./menus"
 import { useUserContext } from "@/hooks/useUserContext";
+
+const getMenus = () => {
+  return [
+    {
+      name: "Início",
+      icon: "home",
+      path: "/(tabs)",
+    },
+  ]
+}
 
 export default function MenuScreen() {
   const menus = getMenus()

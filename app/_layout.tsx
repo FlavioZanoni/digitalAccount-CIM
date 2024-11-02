@@ -8,14 +8,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UserProvider } from '@/hooks/useUserContext';
 import { StorageService } from '@/lib/StorageService';
 import { TOKEN_COOKIE_NAME } from '@/constants';
-
-SplashScreen.preventAutoHideAsync();
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RootLayout() {
   const queryClient = new QueryClient()
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+  SplashScreen.hideAsync()
 
   const checkExistingToken = async () => {
     const token = await StorageService.getItem(TOKEN_COOKIE_NAME)
@@ -27,8 +27,8 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync()
+      checkExistingToken()
     }
-    checkExistingToken()
   }, [loaded])
 
   if (!loaded) {
@@ -39,13 +39,15 @@ export default function RootLayout() {
     <ThemeProvider value={DefaultTheme}>
       <UserProvider>
         <QueryClientProvider client={queryClient}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-            <Stack.Screen name="login" options={{ headerShown: false }} />
-          </Stack>
+          <SafeAreaView style={{ flex: 1 }} >
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+              <Stack.Screen name="login" options={{ headerShown: false }} />
+            </Stack>
+          </SafeAreaView >
         </QueryClientProvider>
       </UserProvider>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
