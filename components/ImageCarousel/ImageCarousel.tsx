@@ -22,15 +22,6 @@ const ImageCarousel = () => {
     },
   });
 
-  const isValidUrl = (url: string) => {
-    try {
-      new URL(url);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
-
   const getCachedImage = async (imageUrl: string) => {
     try {
       // For web, just return the URL directly
@@ -118,7 +109,7 @@ const ImageCarousel = () => {
     let imageSource = item.logo ? cachedImages[item.logo] : null;
 
     if (imageSource) {
-      if (!imageSource.cached && imageSource.uri.startsWith('http')) {
+      if (!imageSource.cached && !imageSource.uri.startsWith('http')) {
         imageSource.uri = url + imageSource.uri
       }
     }
@@ -141,14 +132,13 @@ const ImageCarousel = () => {
   };
 
   // Web-specific carousel styles
-  const carouselStyle = isWeb ? {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  } : {};
 
   return (
-    <View style={[styles.container, carouselStyle]}>
+    <View style={[styles.container, {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }]}>
       <Carousel
         loop
         width={windowWidth}
@@ -157,11 +147,6 @@ const ImageCarousel = () => {
         data={users.filter((user) => user.logo)}
         scrollAnimationDuration={1000}
         renderItem={renderItem}
-        // Web-specific props
-        {...(isWeb && {
-          style: { width: '100%', maxWidth: 800 }, // Limit max width on web
-          defaultIndex: 0,
-        })}
       />
     </View>
   );
@@ -170,6 +155,8 @@ const ImageCarousel = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    height: 300,
   },
   itemContainer: {
     flex: 1,
@@ -180,7 +167,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    maxWidth: 800, // Limit image size on web
   },
   loadingContainer: {
     flex: 1,
