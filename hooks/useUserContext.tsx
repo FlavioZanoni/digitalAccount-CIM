@@ -1,8 +1,8 @@
 "use client"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import { User } from "../lib/api"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { USER_COOKIE_NAME } from "@/constants"
+import { StorageService } from "@/lib/StorageService"
 type UserProps = {
   userCtx?: User
   setUserCtx: React.Dispatch<React.SetStateAction<User | undefined>>
@@ -17,7 +17,7 @@ type Props = {
 export const UserProvider = ({ children }: Props) => {
   const [userCtx, setUserCtx] = useState<User | undefined>()
   const getUserInCookie = async () => {
-    return await AsyncStorage.getItem(USER_COOKIE_NAME)
+    return await StorageService.getItem(USER_COOKIE_NAME)
   }
 
   useEffect(() => {

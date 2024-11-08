@@ -1,17 +1,21 @@
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack, router } from 'expo-router';
+import { Stack, router, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UserProvider } from '@/hooks/useUserContext';
 import { StorageService } from '@/lib/StorageService';
-import { TOKEN_COOKIE_NAME } from '@/constants';
+import { TOKEN_COOKIE_NAME, USER_COOKIE_NAME } from '@/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { apiInstance } from '@/lib/api/apiInstance';
 
 export default function RootLayout() {
   const queryClient = new QueryClient()
+  const [pathname, setPathname] = useState('');
+  const navigation = useNavigation()
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -24,11 +28,32 @@ export default function RootLayout() {
   }
 
   useEffect(() => {
-    checkExistingToken()
     if (loaded) {
       SplashScreen.hideAsync()
+      useInterceptors()
     }
+    checkExistingToken()
   }, [loaded])
+
+  const useInterceptors = () => {
+    apiInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response.status === 401 || error.response.status === 403) {
+          StorageService.clear()
+          const currentRoute = navigation?.getState()?.routes?.[navigation?.getState?.()?.index || 0].name;
+          setPathname(currentRoute || "");
+          console.log("routes", navigation?.getState?.()?.routes)
+          console.log("currentRoute", currentRoute)
+          if (currentRoute !== "login") {
+            console.log("redirecting to login")
+            navigation.navigate("login")
+          }
+          return
+        }
+      }
+    )
+  }
 
   if (!loaded) {
     return null

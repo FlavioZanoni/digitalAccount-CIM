@@ -44,6 +44,7 @@ const ImageCarousel = () => {
       const filepath = `${FileSystem.cacheDirectory}${filename}`;
 
       const fileInfo = await FileSystem.getInfoAsync(filepath);
+      console.log("fileInfo", fileInfo)
 
       if (fileInfo.exists) {
         return { uri: fileInfo.uri, cached: true };
@@ -121,6 +122,10 @@ const ImageCarousel = () => {
         imageSource.uri = url + imageSource.uri
       }
     }
+
+    useEffect(() => {
+      console.log(imageSource)
+    }, [imageSource])
 
     return (
       <View style={styles.itemContainer}>
