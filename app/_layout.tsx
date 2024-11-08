@@ -14,7 +14,6 @@ import { apiInstance } from '@/lib/api/apiInstance';
 
 export default function RootLayout() {
   const queryClient = new QueryClient()
-  const [pathname, setPathname] = useState('');
   const navigation = useNavigation()
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -42,7 +41,6 @@ export default function RootLayout() {
         if (error.response.status === 401 || error.response.status === 403) {
           StorageService.clear()
           const currentRoute = navigation?.getState()?.routes?.[navigation?.getState?.()?.index || 0].name;
-          setPathname(currentRoute || "");
           console.log("routes", navigation?.getState?.()?.routes)
           console.log("currentRoute", currentRoute)
           if (currentRoute !== "login") {

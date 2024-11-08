@@ -7,8 +7,7 @@ import { getUser } from '@/lib/api/user';
 import { useUserContext } from '@/hooks/useUserContext';
 import { API_URL } from '@/constants';
 
-const url = API_URL
-
+const url = "https://www.sigillum.app.br/"
 type CachedType = {
   [key: string]: {
     cached: boolean,
@@ -41,17 +40,20 @@ const ImageCarousel = () => {
         ?.split('/')
         ?.pop()
         ?.replace(/[^a-zA-Z0-9.]/g, '');
-      const filepath = `${FileSystem.cacheDirectory}${filename}`;
+      const filepath = `${FileSystem.documentDirectory}${filename}`;
 
       const fileInfo = await FileSystem.getInfoAsync(filepath);
-      console.log("fileInfo", fileInfo)
 
       if (fileInfo.exists) {
         return { uri: fileInfo.uri, cached: true };
       }
 
       const downloadResult = await FileSystem.downloadAsync(url + imageUrl, filepath);
-      console.log('Image cached:', downloadResult.uri);
+
+      if (downloadResult.status !== 200) {
+        throw new Error('Failed to download image');
+      }
+
       return { uri: downloadResult.uri, cached: true };
     } catch (error) {
       console.error('Error caching image:', error);
@@ -67,7 +69,16 @@ const ImageCarousel = () => {
       const cachedUris: CachedType = {};
       for (const loja of users) {
         if (loja.logo) {
-          cachedUris[loja.logo] = await getCachedImage(loja.logo);
+          let current;
+          try {
+            current = await getCachedImage(loja.logo);
+          } catch (error) {
+            console.error('Error caching image:', error);
+          }
+
+          if (current) {
+            cachedUris[loja.logo] = current;
+          }
         }
       }
       setCachedImages(cachedUris);
@@ -79,7 +90,7 @@ const ImageCarousel = () => {
   // Custom image component for web
   const ImageComponent = ({ source, style, resizeMode }:
     {
-      source: { uri: string }
+      source: { uri: string, cached: boolean }
       style: { [key: string]: any }
       resizeMode: ImageResizeMode
     }) => {
@@ -95,7 +106,9 @@ const ImageCarousel = () => {
         />
       );
     }
-    return <Image source={source} style={style} resizeMode={resizeMode} />;
+
+    const { uri } = source;
+    return <Image source={{ uri }} style={style} resizeMode={resizeMode} />;
   };
 
   if (isLoading) {
@@ -123,28 +136,20 @@ const ImageCarousel = () => {
       }
     }
 
-    useEffect(() => {
-      console.log(imageSource)
-    }, [imageSource])
+    if (!imageSource) {
+      return <></>
+    }
 
     return (
       <View style={styles.itemContainer}>
-        {imageSource ? (
-          <ImageComponent
-            source={imageSource}
-            style={styles.image}
-            resizeMode="contain"
-          />
-        ) : (
-          <View style={styles.placeholderContainer}>
-            <Text>No image available</Text>
-          </View>
-        )}
+        <ImageComponent
+          source={imageSource}
+          style={styles.image}
+          resizeMode="contain"
+        />
       </View>
-    );
+    )
   };
-
-  // Web-specific carousel styles
 
   return (
     <View style={[styles.container, {
