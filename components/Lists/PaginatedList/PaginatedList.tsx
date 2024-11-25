@@ -127,7 +127,6 @@ function PaginatedList<T extends BaseEntity>({
             }
 
             if (Accordion) {
-              console.log(Accordion)
               return page?.content?.map((item, index) =>
                 <Accordion key={item.id || index} data={item}
                   isOpen={oppenedAcordions.includes(item.id)}

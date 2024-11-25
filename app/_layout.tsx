@@ -41,10 +41,7 @@ export default function RootLayout() {
         if (error.response.status === 401 || error.response.status === 403) {
           StorageService.clear()
           const currentRoute = navigation?.getState()?.routes?.[navigation?.getState?.()?.index || 0].name;
-          console.log("routes", navigation?.getState?.()?.routes)
-          console.log("currentRoute", currentRoute)
           if (currentRoute !== "login") {
-            console.log("redirecting to login")
             navigation.navigate("login")
           }
           return
