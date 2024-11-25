@@ -16,16 +16,16 @@ import { router } from 'expo-router';
 const { height } = Dimensions.get('window');
 
 const LoginScreen = () => {
-  useEffect(() => {
-    checkExistingToken();
-  }, []);
-
   const checkExistingToken = async () => {
     const token = await StorageService.getItem(TOKEN_COOKIE_NAME);
     if (token) {
       router.replace("/(tabs)/")
     }
   };
+
+  useEffect(() => {
+    checkExistingToken();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

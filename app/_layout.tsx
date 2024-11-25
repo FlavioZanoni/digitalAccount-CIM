@@ -21,7 +21,7 @@ export default function RootLayout() {
 
   const checkExistingToken = async () => {
     const token = await StorageService.getItem(TOKEN_COOKIE_NAME)
-    if (!token && loaded) {
+    if (!token) {
       router.push("/login")
     }
   }

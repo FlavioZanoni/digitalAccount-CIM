@@ -16,7 +16,7 @@ const CalendarAccordion = ({ data, isOpen, onClick }: {
 
   const openWhatsApp = () => {
     const phoneNumber = data?.loja?.secretarioTel;
-    const message = `oie`;
+    const message = ``;
 
     const cleanPhoneNumber = phoneNumber.replace(/\D/g, '');
     const encodedMessage = encodeURIComponent(message);
