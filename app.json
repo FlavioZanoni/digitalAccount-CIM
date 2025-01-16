@@ -18,6 +18,7 @@
       "bundleIdentifier": "com.dailycode.Sigillum"
     },
     "android": {
+      "hermes": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

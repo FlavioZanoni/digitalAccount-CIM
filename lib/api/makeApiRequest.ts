@@ -1,11 +1,11 @@
-import { isAxiosError } from "axios"
-import { apiInstance } from "./apiInstance"
+import { isAxiosError } from "axios";
+import { apiInstance } from "./apiInstance";
 
 interface IApiRequest {
-  method: "get" | "post" | "put" | "delete"
-  url: string
-  data?: any
-  filter?: any
+  method: "get" | "post" | "put" | "delete";
+  url: string;
+  data?: any;
+  filter?: any;
 }
 
 export const makeApiRequest = async <T>({
@@ -17,14 +17,14 @@ export const makeApiRequest = async <T>({
   try {
     const response = await apiInstance[method]<T>(
       `${url}${filter ? filter : ""}`,
-      data
-    )
-    return response.data
+      data,
+    );
+    return response.data;
   } catch (err) {
     if (isAxiosError(err)) {
-      throw err.response?.data
+      throw err.response?.data;
     } else {
-      throw err
+      throw err;
     }
   }
-}
+};
