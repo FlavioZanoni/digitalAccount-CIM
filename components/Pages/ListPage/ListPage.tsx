@@ -82,6 +82,11 @@ function ListPage<T extends BaseEntity>({
     value: store.id,
   })) || [];
 
+
+  if (hasStoreSelect && isLoading) {
+    return
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>

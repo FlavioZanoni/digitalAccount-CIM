@@ -71,7 +71,7 @@ const CalendarAccordion = ({ data, isOpen, onClick }: {
       </TouchableOpacity>
       {isOpen && (
         <View style={styles.content}>
-          <Text style={styles.listItemText}>{data?.data?.[3] ?? ""}h - {data?.sessao?.loja?.rua || ""} </Text>
+          <Text style={styles.listItemText}>{data?.data?.[3] ?? ""}h - {data?.tipo || ""} </Text>
           {data?.loja?.secretarioTel && (
             <TouchableOpacity onPress={() => openWhatsApp()} style={styles.btn}>
               <Icon style={{ color: "#fff" }} name="add" size={24} />
