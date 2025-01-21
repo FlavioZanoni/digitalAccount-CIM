@@ -25,11 +25,14 @@ export default function RootLayout() {
   };
 
   useEffect(() => {
+    const validateToken = async () => {
+      await checkExistingToken();
+    };
     if (loaded) {
       SplashScreen.hideAsync();
       useInterceptors();
+      validateToken();
     }
-    checkExistingToken();
   }, [loaded]);
 
   const useInterceptors = () => {

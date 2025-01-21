@@ -1,43 +1,43 @@
-import type { ROLES } from "../../constants"
+import type { ROLES } from "../../constants";
 
 export interface BaseEntity {
-  id: number
-  value: string
-  active: boolean
+  id: number;
+  value: string;
+  active: boolean;
 }
 
 export interface IError {
-  code: number
-  moreInfo: string
-  developerMessage: string
-  status: number
-  messages: string[]
+  code: number;
+  moreInfo: string;
+  developerMessage: string;
+  status: number;
+  messages: string[];
 }
 
 export interface Pagination<T> {
-
   page: {
-    number: number
-    totalElements: number
-    size: number
-    totalPages: number
-  }
-  content: T[]
+    number: number;
+    totalElements: number;
+    size: number;
+    totalPages: number;
+  };
+  content: T[];
 }
 
 export interface GetApiParams {
-  id?: number
-  page: number
-  size: number
-  filter?: string
+  id?: number;
+  page: number;
+  size: number;
+  filter?: string;
 }
 
 export type User = {
-  id: number
-  nome: string
-  urlFoto: string
-  usuarioTipo: Role
-  hash: string
+  id: number;
+  nome: string;
+  urlFoto: string;
+  usuarioTipo: Role;
+  hash: string;
+  lojas: Store[];
 };
 
-export type Role = (typeof ROLES)[number]
+export type Role = (typeof ROLES)[number];

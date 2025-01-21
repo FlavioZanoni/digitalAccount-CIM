@@ -15,6 +15,7 @@ export default function PresenceHistoryScreen() {
       currentId={currentId}
       setCurrentId={setCurrentId}
       Accordion={CalendarAccordion}
+      hasStoreSelect
     />
   )
 }

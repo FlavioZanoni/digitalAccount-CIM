@@ -30,6 +30,7 @@ type PageListProps<T> = {
   children?: React.ReactNode;
   path?: string;
   Accordion?: (data: any) => JSX.Element;
+  storeId?: number;
 };
 
 const ListItem = ({ label, isArrow }: { label: string; isArrow?: boolean }) => (
@@ -55,6 +56,7 @@ function PaginatedList<T extends BaseEntity>({
   children,
   path,
   Accordion,
+  storeId,
 }: PageListProps<T>) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [oppenedAcordions, setOppenedAcordions] = useState<number[]>([]);
@@ -66,7 +68,7 @@ function PaginatedList<T extends BaseEntity>({
     isFetching,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: [`get${instance}`, param, query],
+    queryKey: [`get${instance}`, param, query, storeId],
     queryFn: async ({ pageParam = { page: 0, size: 10 } }) => {
       const params = [];
       if (param) {
@@ -85,6 +87,7 @@ function PaginatedList<T extends BaseEntity>({
       return apiFunction({
         page: pageParam.page,
         size: pageParam.size,
+        condominio: storeId?.toString(),
         filter: filterBuilder(params),
       });
     },
@@ -115,7 +118,7 @@ function PaginatedList<T extends BaseEntity>({
   return (
     <View style={styles.container}>
       {data?.pages?.[0]?.content?.length === 0 ? (
-        <Text style={styles.noDataText}>No data available</Text>
+        <Text style={styles.noDataText}>Nenhum item</Text>
       ) : (
         <View style={styles.contentContainer}>
           {data?.pages?.map((page, pageIndex) => {
